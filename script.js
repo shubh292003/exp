@@ -4,9 +4,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const mobileMenu = document.querySelector('.mobile_menu');
     const mobileLinks = document.querySelectorAll('.mobile_link');
 
+    // Simplified Nav Adjustment (for skills, resume, about pages)
+    const navContent = navBar ? navBar.closest('.nav_content') : null;
+    if (navBar && navBar.classList.contains('simplified') && navContent) {
+        navContent.style.position = 'absolute';
+    }
+
     // Scroll Logic
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
+        if (window.scrollY > 50 && !navBar.classList.contains('simplified')) {
             navBar.classList.add('scrolled');
         } else {
             navBar.classList.remove('scrolled');
