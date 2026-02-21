@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Skills | Shubham Kumar</title>
+    <link rel="stylesheet" href="index.css">
+    <style>
+        .skills-container {
+            min-height: 100vh;
+            padding: calc(var(--nav-height) + 60px) 5% 100px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .skills-header {
+            text-align: center;
+            margin-bottom: 5rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .skills-header h1 {
+            font-size: clamp(3rem, 8vw, 5rem);
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff 30%, var(--accent-primary) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Skills Radar/Grid Layout */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            animation: fadeIn 1s ease-out 0.2s both;
+        }
+
+        .skill-category {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 2.5rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-category:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-primary);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .category-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-primary);
+        }
+
+        .category-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* Skill Item Styling */
+        .skill-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .skill-item {
+            position: relative;
+        }
+
+        .skill-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .skill-name {
+            color: var(--text-main);
+        }
+
+        .skill-percentage {
+            color: var(--accent-primary);
+        }
+
+        .skill-bar-bg {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .skill-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 10px;
+            width: 0;
+            position: relative;
+            animation: fillBar 2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        .skill-bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.2),
+                    transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes fillBar {
+            from {
+                width: 0;
+            }
+
+            to {
+                width: var(--target-width);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        /* Floating Chips Section */
+        .tools-section {
+            margin-top: 6rem;
+            text-align: center;
+        }
+
+        .tools-section h2 {
+            font-size: 2rem;
+            margin-bottom: 3rem;
+            color: var(--text-muted);
+        }
+
+        .tools-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .tool-chip {
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            color: var(--text-muted);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .tool-chip:hover {
+            background: var(--accent-primary);
+            color: white;
+            border-color: transparent;
+            transform: scale(1.1) rotate(2deg);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Back Navigation */
+        .back-nav {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            z-index: 1101;
+        }
+
+        .btn-back {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .btn-back:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(-5px);
+            border-color: var(--accent-primary);
+        }
+
+        @media (max-width: 768px) {
+            .skills-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .skill-category {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="portfolio">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+
+        <nav class="back-nav">
+            <a href="index.html" class="btn-back">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m15 18-6-6 6-6" />
+                </svg>
+                <span>Dashboard</span>
+            </a>
+        </nav>
+
+        <main class="skills-container">
+            <header class="skills-header">
+                <span class="section-tag" style="color: var(--accent-secondary);">Knowledge Base</span>
+                <h1>Mastered Tech</h1>
+                <p class="hero_description" style="margin: 0 auto;">A comprehensive overview of my technical expertise
+                    and the tools I use to build the future.</p>
+            </header>
+
+            <div class="skills-grid">
+                <!-- Languages -->
+                <section class="skill-category">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <polyline points="16 18 22 12 16 6" />
+                                <polyline points="8 6 2 12 8 18" />
+                            </svg>
+                        </div>
+                        <h2>Programming</h2>
+                    </div>
+                    <div class="skill-list">
+                        <div class="skill-item">
+                            <div class="skill-info"><span class="skill-name">C++</span><span
+                                    class="skill-percentage">90%</span></div>
+                            <div class="skill-bar-bg">
+                                <div class="skill-bar-fill" style="--target-width: 90%;"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-info"><span class="skill-name">Java</span><span
+                                    class="skill-percentage">85%</span></div>
+                            <div class="skill-bar-bg">
+                                <div class="skill-bar-fill" style="--target-width: 85%;"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-info"><span class="skill-name">Python</span><span
+                                    class="skill-percentage">75%</span></div>
+                            <div class="skill-bar-bg">
+                                <div class="skill-bar-fill" style="--target-width: 75%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Web Tech -->
+                <section class="skill-category">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <rect width="20" height="14" x="2" y="3" rx="2" />
+                                <line x1="8" y1="21" x2="16" y2="21" />
+                                <line x1="12" y1="17" x2="12" y2="21" />
+                            </svg>
+                        </div>
+                        <h2>Web Engineering</h2>
+                    </div>
+                    <div class="skill-list">
+                        <div class="skill-item">
+                            <div class="skill-info"><span class="skill-name">HTML5 / CSS3</span><span
+                                    class="skill-percentage">95%</span></div>
+                            <div class="skill-bar-bg">
+                                <div class="skill-bar-fill" style="--target-width: 95%;"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-info"><span class="skill-name">JavaScript (ES6+)</span><span
+                                    class="skill-percentage">88%</span></div>
+                            <div class="skill-bar-bg">
+                                <div class="skill-bar-fill" style="--target-width: 88%;"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-info"><span class="skill-name">Responsive Design</span><span
+                                    class="skill-percentage">92%</span></div>
+                            <div class="skill-bar-bg">
+                                <div class="skill-bar-fill" style="--target-width: 92%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Databases/Other -->
+                <section class="skill-category">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <ellipse cx="12" cy="5" rx="9" ry="3" />
+                                <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+                                <path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3" />
+                            </svg>
+                        </div>
+                        <h2>Infrastructure</h2>
+                    </div>
+                    <div class="skill-list">
+                        <div class="skill-item">
+                            <div class="skill-info"><span class="skill-name">SQL / Management</span><span
+                                    class="skill-percentage">80%</span></div>
+                            <div class="skill-bar-bg">
+                                <div class="skill-bar-fill" style="--target-width: 80%;"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-info"><span class="skill-name">Git / GitHub</span><span
+                                    class="skill-percentage">85%</span></div>
+                            <div class="skill-bar-bg">
+                                <div class="skill-bar-fill" style="--target-width: 85%;"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-info"><span class="skill-name">Software Eng. Principles</span><span
+                                    class="skill-percentage">78%</span></div>
+                            <div class="skill-bar-bg">
+                                <div class="skill-bar-fill" style="--target-width: 78%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <section class="tools-section">
+                <h2>Tools & Environments</h2>
+                <div class="tools-cloud">
+                    <span class="tool-chip">VS Code</span>
+                    <span class="tool-chip">Cursor AI</span>
+                    <span class="tool-chip">Linux Terminal</span>
+                    <span class="tool-chip">Figma</span>
+                    <span class="tool-chip">Postman</span>
+                    <span class="tool-chip">Netbeans</span>
+                    <span class="tool-chip">AutoCAD</span>
+                    <span class="tool-chip">DevTools</span>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Reusing background noise effect -->
+    <style>
+        .portfolio::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://grainy-gradients.vercel.app/noise.svg');
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: 1;
+        }
+    </style>
+</body>
+
+</html>
